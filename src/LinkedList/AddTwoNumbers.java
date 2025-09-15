@@ -78,18 +78,86 @@ public class AddTwoNumbers {
 //        return stack;
 //    }
 
+
+    public static ListNode addInList (ListNode head1, ListNode head2) {
+        Stack<Integer> s1 = new Stack<>();
+        Stack<Integer> s2 = new Stack<>();
+        while ( head1 != null) {
+            s1.push(head1.val);
+            head1 = head1.next;
+        }
+
+        while ( head2 != null) {
+            s2.push(head2.val);
+            head2 = head2.next;
+        }
+
+        //进位
+        Integer nextFlag = 0;
+        ListNode first = new ListNode(-1);
+        ListNode next = first;
+        Stack<ListNode> result = new Stack<>();
+        while ( s1.size() > 0 || s2.size() > 0) {
+            Integer temp = 0;
+            if (s1.size() > 0 && s2.size() > 0 ) {
+                temp = (s1.pop() + s2.pop() + nextFlag);
+                if (temp > 9) {
+                    temp = temp -10;
+                    nextFlag =1;
+                }
+            }else if (s1.size() > 0) {
+                temp = (s1.pop() + nextFlag) ;
+                if (temp > 9) {
+                    temp = temp -10;
+                    nextFlag =1;
+                }
+
+            } else if (s2.size() > 0) {
+                temp = (s2.pop() + nextFlag) ;
+                if (temp > 9) {
+                    temp = temp -10;
+                    nextFlag =1;
+                }
+            }
+            result.push(new ListNode(temp));
+        }
+        if (nextFlag == 1) {
+            result.push(new ListNode(1));
+        }
+        while (result.size() > 0) {
+            next.next = result.pop();
+            next = next.next;
+        }
+        return first.next;
+    }
     public static void main(String[] args) {
-        ListNode l1 = new ListNode(2);
-        l1.next = new ListNode(4);
-        l1.next.next = new ListNode(9);
+//        ListNode l1 = new ListNode(2);
+//        l1.next = new ListNode(4);
+//        l1.next.next = new ListNode(9);
+//
+//
+//        ListNode l2 = new ListNode(5);
+//        l2.next = new ListNode(6);
+//        l2.next.next = new ListNode(4);
+//        l2.next.next.next = new ListNode(9);
+//
+//        System.out.println(new AddTwoNumbers().addTwoNumbers(l1,l2));
+        ListNode L1 = new ListNode(9);
+        ListNode L2 = new ListNode(3);
+        ListNode L3 = new ListNode(7);
+        L1.next = L2;
+        L2.next = L3;
+
+        ListNode L4 = new ListNode(6);
+        ListNode L5 = new ListNode(3);
+        L4.next = L5;
+
+        System.out.println(addInList(L1,L4));
 
 
-        ListNode l2 = new ListNode(5);
-        l2.next = new ListNode(6);
-        l2.next.next = new ListNode(4);
-        l2.next.next.next = new ListNode(9);
 
-        System.out.println(new AddTwoNumbers().addTwoNumbers(l1,l2));
+
+
     }
 
 
